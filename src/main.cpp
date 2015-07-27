@@ -24,11 +24,11 @@ int main() {
   Tracer tracer( window.getSize().x, window.getSize().y );
 
   // Handling Time
-  float t = 0.0;
-  float dt = 1.0/60.0;
-  float stepsize = 300.0;
-  float m1 = 5.0;
-  float m2 = m1;
+  double t = 0.0;
+  double dt = 1.0/60.0;
+  double stepsize = 60.0;
+  double m1 = 1.0;
+  double m2 = m1;
 
   // Add a Title:
   sf::Font font;
@@ -63,6 +63,16 @@ int main() {
   recttemp = theta2.getLocalBounds(); 
   theta2.setPosition( (gDisplayx-recttemp.width)/2.0, 4.1*(recttemp.height));
 
+  sf::Text equalmass;
+  if( m1 == m2 ) {
+    equalmass.setFont(font);
+    equalmass.setCharacterSize(20);
+    equalmass.setColor(sf::Color::Green);
+    equalmass.setString("Equal masses");
+    recttemp = equalmass.getLocalBounds();
+    equalmass.setPosition((gDisplayx+2*recttemp.width)/2.0, 4.7*(recttemp.height));
+  }
+
   while( window.isOpen() ) {
       sf::Event event;
       while( window.pollEvent(event) ) {
@@ -78,15 +88,18 @@ int main() {
 
       // DRAWINGS
       window.clear();
+      if(m1==m2) {
+	//window.draw(equalmass);
+      }
       window.draw(title);
       window.draw(theta1);
       window.draw(theta2);
 
-      // Tracers
-      window.draw(tracer);
-
       // Pendulum    
       window.draw( pendulum );
+
+      // Tracers
+      window.draw(tracer);
 
       window.display();   
 

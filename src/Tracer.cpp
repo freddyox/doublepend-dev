@@ -59,7 +59,7 @@ void Tracer::dissolve1(Pendulum* ptr) {
     tracercolor = sf::Color(0,255,0,ratio);
     (*it).setFillColor( tracercolor );
 
-    if(life > 0.00003) {
+    if( life > 0.00003 ) {
       trace1.erase(it);
       life = 0;
     }

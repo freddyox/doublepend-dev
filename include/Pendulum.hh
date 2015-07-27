@@ -24,8 +24,8 @@ private:
 
   //RK4
   float theta1_knot, theta2_knot;
-  float u1_knot, u2_knot, u3_knot, u4_knot;
-  float u1_nth, u2_nth, u3_nth, u4_nth;
+  double u1_knot, u2_knot, u3_knot, u4_knot;
+  double u1_nth, u2_nth, u3_nth, u4_nth;
 
 public:
   Pendulum(float,float); // dimensions of screen
@@ -35,7 +35,7 @@ public:
   sf::Vector2f getPendulum1Size() { return pendulum1Size; }
   sf::Vector2f getPendulum2Size() {return pendulum2Size; }
 
-  void updatePendulum(float, float, float, float);
+  void updatePendulum(double, double, double, double);
 
   sf::Vector2f getPendulum1Position();
   sf::Vector2f getPendulum2Position();
