@@ -19,7 +19,7 @@ private:
   std::vector<sf::CircleShape> trace1,trace2;
   std::vector<sf::CircleShape>::iterator it;
   sf::Color tracercolor;
-  float life;
+  float lifetime,life;
   sf::Time sftime1,sftime2;
 
   sf::Color red;

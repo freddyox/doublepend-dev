@@ -6,7 +6,8 @@
 Tracer::Tracer(float displayx, float displayy) {
   mscreenwidth = displayx;
   mscreenheight = displayy;
-  life = 3.0;
+  life = 10.0;
+  lifetime = 20.0;
   float radius(1.0);
   sf::Color tracercolor = sf::Color::Red;
   sf::Color red = sf::Color::Red;
@@ -51,15 +52,15 @@ void Tracer::dissolve1(Pendulum* ptr) {
   sf::Vector2f temp = ptr->getPendulum1Position();
 
   for( it=trace1.begin(); it != trace1.end(); it++) {
-    sf::Vector2f tracerposition = (*it).getPosition();
-    sf::Vector2f distanceVec = temp - tracerposition;
-    float distance = sqrt( pow(distanceVec.x,2) + pow(distanceVec.y,2) );
-    float ratio = 255/(0.1*distance);
-
+    //sf::Vector2f tracerposition = (*it).getPosition();
+    //sf::Vector2f distanceVec = temp - tracerposition;
+    //float distance = sqrt( pow(distanceVec.x,2) + pow(distanceVec.y,2) );
+    //float ratio = 255/(0.1*distance);
+    float ratio = 255*( (life*5e4)/lifetime );
     tracercolor = sf::Color(0,255,0,ratio);
     (*it).setFillColor( tracercolor );
 
-    if( life > 0.00003 ) {
+    if( life > 0.0009 ) {
       trace1.erase(it);
       life = 0;
     }
@@ -75,15 +76,15 @@ void Tracer::dissolve2(Pendulum* ptr) {
   sf::Vector2f temp = ptr->getPendulum2Position();
 
   for( it=trace2.begin(); it != trace2.end(); it++) {
-    sf::Vector2f tracerposition = (*it).getPosition();
-    sf::Vector2f distanceVec = temp - tracerposition;
-    float distance = sqrt( pow(distanceVec.x,2) + pow(distanceVec.y,2) );
-    float ratio = 255/(0.1*distance);
-
+    // sf::Vector2f tracerposition = (*it).getPosition();
+    // sf::Vector2f distanceVec = temp - tracerposition;
+    // float distance = sqrt( pow(distanceVec.x,2) + pow(distanceVec.y,2) );
+    // float ratio = 255/(0.1*distance);
+    float ratio = 255*( (life*5e4)/lifetime );
     tracercolor = sf::Color(255,0,0,ratio);
     (*it).setFillColor( tracercolor );
 
-    if(life > 0.00003) {
+    if(life > 0.0009) {
       trace2.erase(it);
       life = 0;
     }

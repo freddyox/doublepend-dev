@@ -26,7 +26,7 @@ int main() {
   // Handling Time
   double t = 0.0;
   double dt = 1.0/60.0;
-  double stepsize = 60.0;
+  double stepsize = 50.0;
   double m1 = 1.0;
   double m2 = m1;
 
@@ -80,6 +80,8 @@ int main() {
 	  window.close();
 	}
       }
+      window.clear();
+
       // UPDATING
       pendulum.updatePendulum(t,stepsize, m1, m2);
       tracer.setPos(&pendulum);
@@ -87,7 +89,6 @@ int main() {
       tracer.dissolve2(&pendulum);
 
       // DRAWINGS
-      window.clear();
       if(m1==m2) {
 	//window.draw(equalmass);
       }
@@ -95,16 +96,15 @@ int main() {
       window.draw(theta1);
       window.draw(theta2);
 
-      // Pendulum    
-      window.draw( pendulum );
-
       // Tracers
       window.draw(tracer);
 
+      // Pendulum    
+      window.draw( pendulum );
+      
       window.display();   
 
       t+=dt;
- 
   }
   return 0;
 }

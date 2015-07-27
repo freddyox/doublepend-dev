@@ -21,6 +21,7 @@ private:
   sf::CircleShape origin,middle,bottom;
 
   float omega, gravity, timer, conv, tracerang1, trancerang2;
+  int count;
 
   //RK4
   float theta1_knot, theta2_knot;
