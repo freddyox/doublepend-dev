@@ -8,34 +8,41 @@
 class Pendulum : public sf::Drawable, public sf::Transformable
 {
 private:
-  sf::Vector2f pendulumSize;
-  float width,height;
   float mscreenwidth, mscreenheight;
-  sf::Color pendulumColor;
-  sf::RectangleShape pendulum;
-  sf::CircleShape origin,bottom;
-  float theta_knot;
-  float omega;
-  float gravity;
-  float drag;
-  float theta;
-  float theta_dot;
-  float timer;
-  float conv,tracerang;
+  float screenoffset;
+
+  sf::Vector2f pendulum1Size, pendulum2Size;
+  float width1, height1, width2, height2;
+
+  sf::Color pendulum1Color, pendulum2Color;
+
+  float radius;
+  sf::RectangleShape pendulum1, pendulum2;
+  sf::CircleShape origin,middle,bottom;
+
+  float omega, gravity, timer, conv, tracerang1, trancerang2;
 
   //RK4
-  float u1_knot, u2_knot, u1_nth, u2_nth;
+  float theta1_knot, theta2_knot;
+  float u1_knot, u2_knot, u3_knot, u4_knot;
+  float u1_nth, u2_nth, u3_nth, u4_nth;
+
 public:
-  Pendulum(float,float);
+  Pendulum(float,float); // dimensions of screen
   ~Pendulum() {};
   void draw(sf::RenderTarget&, sf::RenderStates) const;
-  sf::Vector2f getpendulumSize() { return pendulumSize; }
-  void updatePendulum(float);
-  void updatePendulumRK4(float,float);
-  void chooseMethod(float,float);
-  void addDrag(float);
-  sf::Vector2f getPendulumPosition();
-  std::string getThetaKnotString();
-  float getThetaKnot() {return theta_knot;} 
+
+  sf::Vector2f getPendulum1Size() { return pendulum1Size; }
+  sf::Vector2f getPendulum2Size() {return pendulum2Size; }
+
+  void updatePendulum(float, float, float, float);
+
+  sf::Vector2f getPendulum1Position();
+  sf::Vector2f getPendulum2Position();
+
+  std::string getThetaKnot1String();
+  std::string getThetaKnot2String();
+  float getTheta1Knot() {return theta1_knot;} 
+  float getTheta2Knot() {return theta2_knot;}
 };
 #endif

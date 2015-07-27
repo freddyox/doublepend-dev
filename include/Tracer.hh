@@ -16,11 +16,11 @@ class Tracer : public sf::Transformable, public sf::Drawable
 private:
   float mscreenwidth, mscreenheight;
   sf::CircleShape circletracer;
-  std::vector<sf::CircleShape> trace;
+  std::vector<sf::CircleShape> trace1,trace2;
   std::vector<sf::CircleShape>::iterator it;
   sf::Color tracercolor;
   float life;
-  sf::Time sftime;
+  sf::Time sftime1,sftime2;
 
   sf::Color red;
   sf::Color blue;
@@ -35,7 +35,7 @@ public:
   ~Tracer() {};
   void draw(sf::RenderTarget&, sf::RenderStates) const;
   void setPos(Pendulum*);
-  void dissolve(Pendulum*);
-
+  void dissolve1(Pendulum*);
+  void dissolve2(Pendulum*);
 };
 #endif

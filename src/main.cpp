@@ -1,5 +1,5 @@
 //    ************************************************************
-//    *                    Pendulum Simulation                   *
+//    *                Double Pendulum Simulation                *
 //    *                         June 2015                        *
 //    ************************************************************
 #include <SFML/Window.hpp>
@@ -16,7 +16,7 @@ const float gDisplayx = 800;
 const float gDisplayy = 800;
 int main() {
   //GAME SETUP
-  sf::RenderWindow window(sf::VideoMode(gDisplayx,gDisplayy), "Simulation");
+  sf::RenderWindow window(sf::VideoMode(gDisplayx,gDisplayy), "Double Pendulum Simulation");
   window.setFramerateLimit(60);
 
   // Initializing
@@ -26,6 +26,9 @@ int main() {
   // Handling Time
   float t = 0.0;
   float dt = 1.0/60.0;
+  float stepsize = 300.0;
+  float m1 = 5.0;
+  float m2 = m1;
 
   // Add a Title:
   sf::Font font;
@@ -34,46 +37,31 @@ int main() {
     std::cerr << "ERROR: Font did not load properly." << std::endl;
   }
   title.setFont(font);
-  title.setString("Simple Pendulum Simulation");
+  title.setString("Double Pendulum Simulation");
   title.setCharacterSize(40);
   title.setColor(sf::Color::Green);
   sf::FloatRect recttemp = title.getLocalBounds();
-  title.setPosition( (gDisplayx-recttemp.width)/2.0, recttemp.height);
+  title.setPosition( (gDisplayx-recttemp.width)/2.0, 0.5*recttemp.height);
 
-  sf::Text degrees;
-  degrees.setFont(font);
-  degrees.setCharacterSize(40);
-  degrees.setColor(sf::Color::Green);
-  std::string degreesstring;
-  degreesstring = pendulum.getThetaKnotString() + " degrees";
-  degrees.setString(degreesstring);
-  recttemp = degrees.getLocalBounds(); 
-  degrees.setPosition( (gDisplayx-recttemp.width)/2.0, 2.5*(recttemp.height));
+  sf::Text theta1;
+  theta1.setFont(font);
+  theta1.setCharacterSize(30);
+  theta1.setColor(sf::Color::Green);
+  std::string theta1string;
+  theta1string = "Theta 1: " + pendulum.getThetaKnot1String() + " degrees";
+  theta1.setString(theta1string);
+  recttemp = theta1.getLocalBounds(); 
+  theta1.setPosition( (gDisplayx-recttemp.width)/2.0, 2.7*(recttemp.height));
 
-  bool small = false;
-  bool large = false;
-  sf::Text smallangle;
-  sf::Text RK4;
-
-  float theta_knot = pendulum.getThetaKnot();
-  if( theta_knot < 10 ) {
-    small = true; 
-    smallangle.setFont(font);
-    smallangle.setCharacterSize(40);
-    smallangle.setColor(sf::Color::Green);
-    smallangle.setString("Small Angle Approximation");
-    recttemp = smallangle.getLocalBounds();
-    smallangle.setPosition( (gDisplayx-recttemp.width)/2.0, 4*(recttemp.height));
-  }
-  else {
-    large = true;
-    RK4.setFont(font);
-    RK4.setCharacterSize(40);
-    RK4.setColor(sf::Color::Green);
-    RK4.setString("Large Angle - RK4");
-    recttemp = RK4.getLocalBounds();
-    RK4.setPosition( (gDisplayx-recttemp.width)/2.0, 4*(recttemp.height));
-  }
+  sf::Text theta2;
+  theta2.setFont(font);
+  theta2.setCharacterSize(30);
+  theta2.setColor(sf::Color::Green);
+  std::string theta2string;
+  theta2string = "Theta 2: " + pendulum.getThetaKnot2String() + " degrees";
+  theta2.setString(theta2string);
+  recttemp = theta2.getLocalBounds(); 
+  theta2.setPosition( (gDisplayx-recttemp.width)/2.0, 4.1*(recttemp.height));
 
   while( window.isOpen() ) {
       sf::Event event;
@@ -83,21 +71,17 @@ int main() {
 	}
       }
       // UPDATING
-
-      pendulum.chooseMethod(t,80.0);
-
+      pendulum.updatePendulum(t,stepsize, m1, m2);
       tracer.setPos(&pendulum);
-      tracer.dissolve(&pendulum);
+      tracer.dissolve1(&pendulum);
+      tracer.dissolve2(&pendulum);
 
       // DRAWINGS
       window.clear();
       window.draw(title);
-      window.draw(degrees);
-      if(small)
-	window.draw( smallangle );
-      if(large)
-	window.draw(RK4);
-    
+      window.draw(theta1);
+      window.draw(theta2);
+
       // Tracers
       window.draw(tracer);
 
