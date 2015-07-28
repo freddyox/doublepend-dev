@@ -18,17 +18,10 @@ private:
   sf::CircleShape circletracer;
   std::vector<sf::CircleShape> trace1,trace2;
   std::vector<sf::CircleShape>::iterator it;
+
   sf::Color tracercolor;
   float lifetime,life;
   sf::Time sftime1,sftime2;
-
-  sf::Color red;
-  sf::Color blue;
-  sf::Color green;
-  sf::Color indigo;
-  sf::Color yellow;
-  sf::Color orange;
-  sf::Color violet;
 
 public:
   Tracer(float,float);

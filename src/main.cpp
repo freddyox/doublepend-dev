@@ -29,7 +29,7 @@ int main() {
   //                   Parameters                     //
   /////////////////////////////////////////////////////
   float gravity = 9.8;
-  float stepsize = 50.0;
+  float stepsize = 20.0;
   float m1 = 1.0;
   float m2 = 1.0;
   float L1 = 150.0;

@@ -34,7 +34,7 @@ Pendulum::Pendulum(float displayx, float displayy, float L1, float L2, float mas
   u4_nth = u4_knot;
 
   // Pendulum 1:
-  width1 = 1.0;
+  width1 = 1.3;
   height1 = L1;
   sf::Vector2f pendulum1Size( width1,height1 );
   sf::Color pendulum1Color = sf::Color( sf::Color(74,235,219) );
