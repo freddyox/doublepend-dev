@@ -5,18 +5,21 @@
 #include <cmath>
 #include <sstream>
 
-Pendulum::Pendulum(float displayx, float displayy) {
+Pendulum::Pendulum(float displayx, float displayy, float L1, float L2, float mass1, float mass2, float grav, float h) {
   mscreenwidth = displayx;
   mscreenheight = displayy;
-  screenoffset = 40.0;
+  screenoffset = 130.0;
+  gravity = grav;
+  m1 = mass1;
+  m2 = mass2;
+  stepsize = h; 
 
   // Initial Conditions:
   count = 0;
-  conv = 3.14192 / 180.0;
-  gravity = 9.8;                     
+  conv = 3.14192 / 180.0;                    
   srand( time(NULL) );
-  theta1_knot = 150;//rand()%180;        // 15-45 degrees
-  theta2_knot = 180;//rand()%180;        // 15-45 degrees
+  theta1_knot = rand()%180+90;        
+  theta2_knot = rand()%180+90;        
 
   // RK4 (need radians)
   u1_knot = theta1_knot * conv;
@@ -32,7 +35,7 @@ Pendulum::Pendulum(float displayx, float displayy) {
 
   // Pendulum 1:
   width1 = 1.0;
-  height1 = 150.0;
+  height1 = L1;
   sf::Vector2f pendulum1Size( width1,height1 );
   sf::Color pendulum1Color = sf::Color( sf::Color(74,235,219) );
   pendulum1.setSize( pendulum1Size );
@@ -43,7 +46,7 @@ Pendulum::Pendulum(float displayx, float displayy) {
 
   // Pendulum 2:
   width2 = width1;
-  height2 = 100.0;
+  height2 = L2;
   sf::Vector2f pendulum2Size( width2,height2 );
   sf::Color pendulum2Color = sf::Color::Blue;
   pendulum2.setSize( pendulum2Size );
@@ -53,10 +56,9 @@ Pendulum::Pendulum(float displayx, float displayy) {
   			 height1*cos(u1_knot) + mscreenheight/2.0 - height1/2.0 + screenoffset );
   pendulum2.setRotation( theta2_knot );
 
-
   // Ball joints at origin, connecting pend1 to pend2 and bottom of pend2
   radius = 3.0;
-  origin.setRadius(radius/1.5);
+  origin.setRadius(radius/1.2);
   sf::FloatRect originRect = origin.getLocalBounds();
   origin.setOrigin( (originRect.width)/2.0, (originRect.height)/2.0 );
   origin.setFillColor( pendulum1Color );
@@ -77,22 +79,11 @@ Pendulum::Pendulum(float displayx, float displayy) {
   		      height1*cos(u1_knot) + height2*cos(u3_knot) + mscreenheight/2.0-height1/2.0 + screenoffset ); 
 }
 
-void Pendulum::updatePendulum(double time, double stepsize, double m1, double m2) {
+void Pendulum::updatePendulum(double time) {
   timer = time;
   count++;
   if( count % 20 ) {
     double delta = 1/stepsize;
-    // u1_nth = theta1
-    // u2_nth = omega1
-    // u3_nth = theta2
-    // u4_nth = omega2
-
-    // float l0 = -pow(omega,2)*sin(u1_nth);
-    // float l1 = -pow(omega,2)*sin(u1_nth+h*0.5*l0);
-    // float l2 = -pow(omega,2)*sin(u1_nth+h*0.5*l1);
-    // float l3 = -pow(omega,2)*sin(u1_nth+h*0.5*l2);
-  
-    // float u2soln= u2_nth+(h/6)*(l0+2*l1+2*l2+l3);
 
     // Calculate Omega1
     double l0 = (-gravity*(2*m1+m2)*sin(u1_nth) - m2*gravity*sin(u1_nth-2*u3_nth) - 2*sin(u1_nth-u3_nth)*m2*(pow(u4_nth,2)*height2 + pow(u2_nth,2)*height1*cos(u1_nth-u3_nth)) ) / ( height1*(2*m1+m2-m2*cos(2*u1_nth-2*u3_nth)) ); 
@@ -140,15 +131,9 @@ void Pendulum::updatePendulum(double time, double stepsize, double m1, double m2
 
     pendulum2.setPosition( -height1*sin(u1_nth) + mscreenwidth/2.0, 
 			   height1*cos(u1_nth) + mscreenheight/2.0 - height1/2.0 + screenoffset );
-    //middle.setPosition( -height1*sin(u1_nth) + mscreenwidth/2.0, 
-    //		      height1*cos(u1_nth) + mscreenheight/2.0 - height1/2.0 + screenoffset);
-    // bottom.setPosition( -height1*sin(u1_nth) - height2*sin(u3_nth) + mscreenwidth/2.0, 
-    //		      height1*cos(u1_nth) + height2*cos(u3_nth) + mscreenheight/2.0-height1/2.0 + screenoffset );
   }
 }
 
-
-// note these need to be updated - angles should be RK4 angles
 sf::Vector2f Pendulum::getPendulum1Position() {
   sf::Vector2f temp( -height1*sin(u1_nth), height1*cos(u1_nth) );
   sf::Vector2f origin2pendulum( mscreenwidth/2.0, mscreenheight/2.0 - height1/2.0 + screenoffset);
@@ -160,15 +145,16 @@ sf::Vector2f Pendulum::getPendulum2Position() {
   sf::Vector2f temp( -height1*sin(u1_nth) - height2*sin(u3_nth) + mscreenwidth/2.0, 
 		     height1*cos(u1_nth) + height2*cos(u3_nth) + mscreenheight/2.0-height1/2.0 + screenoffset); 
   bottom.setPosition( temp );
-  //pendulum2.setPosition( temp );
  return temp;
 }
+
 std::string Pendulum::getThetaKnot1String() {
   std::ostringstream temp;
   temp << theta1_knot;
   std::string string_temp = temp.str();
   return string_temp;
 }
+
 std::string Pendulum::getThetaKnot2String() {
   std::ostringstream temp;
   temp << theta2_knot;

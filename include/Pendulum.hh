@@ -20,7 +20,7 @@ private:
   sf::RectangleShape pendulum1, pendulum2;
   sf::CircleShape origin,middle,bottom;
 
-  float omega, gravity, timer, conv, tracerang1, trancerang2;
+  float omega, gravity, timer, conv, m1, m2, stepsize;
   int count;
 
   //RK4
@@ -29,14 +29,14 @@ private:
   double u1_nth, u2_nth, u3_nth, u4_nth;
 
 public:
-  Pendulum(float,float); // dimensions of screen
+  Pendulum(float,float,float,float,float,float,float,float); // dimensions of screen, L1, L2
   ~Pendulum() {};
   void draw(sf::RenderTarget&, sf::RenderStates) const;
 
   sf::Vector2f getPendulum1Size() { return pendulum1Size; }
   sf::Vector2f getPendulum2Size() {return pendulum2Size; }
 
-  void updatePendulum(double, double, double, double);
+  void updatePendulum(double);
 
   sf::Vector2f getPendulum1Position();
   sf::Vector2f getPendulum2Position();

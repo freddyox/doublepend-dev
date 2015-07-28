@@ -36,7 +36,6 @@ void Tracer::draw( sf::RenderTarget& target, sf::RenderStates ) const {
 void Tracer::setPos(Pendulum* ptr) {
   sf::Vector2f x_knot1 = ptr->getPendulum1Position();
   sf::Vector2f x_knot2 = ptr->getPendulum2Position();
-  
   circletracer.setPosition( x_knot1 );
   trace1.push_back( circletracer );
   circletracer.setPosition( x_knot2 );
@@ -44,8 +43,6 @@ void Tracer::setPos(Pendulum* ptr) {
 }
 
 void Tracer::dissolve1(Pendulum* ptr) {
-  srand(time(NULL));
-
   sf::Clock timer;
   sftime1 += timer.getElapsedTime();
   float life = sftime1.asSeconds();
@@ -56,20 +53,18 @@ void Tracer::dissolve1(Pendulum* ptr) {
     //sf::Vector2f distanceVec = temp - tracerposition;
     //float distance = sqrt( pow(distanceVec.x,2) + pow(distanceVec.y,2) );
     //float ratio = 255/(0.1*distance);
-    float ratio = 255*( (life*5e4)/lifetime );
+    float ratio = 255*((life*5e4)/lifetime);
     tracercolor = sf::Color(0,255,0,ratio);
     (*it).setFillColor( tracercolor );
-
-    if( life > 0.0009 ) {
-      trace1.erase(it);
-      life = 0;
-    }
+   
+    // if( ratio < 10 ) {
+    //   trace1.erase(it);
+    //   life = 0;
+    // }
   }
 }
 
 void Tracer::dissolve2(Pendulum* ptr) {
-  srand(time(NULL));
-
   sf::Clock timer;
   sftime2 += timer.getElapsedTime();
   float life = sftime2.asSeconds();
@@ -84,9 +79,9 @@ void Tracer::dissolve2(Pendulum* ptr) {
     tracercolor = sf::Color(255,0,0,ratio);
     (*it).setFillColor( tracercolor );
 
-    if(life > 0.0009) {
-      trace2.erase(it);
-      life = 0;
-    }
+    // if(life > 0.0009) {
+    //   trace2.erase(it);
+    //   life = 0;
+    // }
   }
 }
